@@ -80,7 +80,7 @@ final class Router
 	 * @param  string $method 
 	 * @param  string $uri    
 	 */
-	public function dispatch(string $method, string $uri): void
+	public function dispatch(string $method, string $uri)
 	{
 		foreach ($this->routes as $route)
 		{
@@ -90,6 +90,7 @@ final class Router
 			}
 		}
 
+		echo "Route undefined";
 		throw new \Exception("Route undefined");
 	}
 
