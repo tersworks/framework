@@ -14,7 +14,7 @@ final class Router
 	private function __construct() {}
 	private function __clone() {}
 
-	public static function __callStatic(string $name, array $arguments): mixed
+	public static function __call(string $name, array $arguments): mixed
 	{
 		if (in_array($name, self::getAvailableMethods()))
 		{
