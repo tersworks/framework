@@ -16,6 +16,10 @@ class Application extends Container
 	private function __construct(string $path)
 	{
 		$this->basePath = $path;
+
+		static::registerFacades([
+			Tersworks\Facades\Route::class
+		]);
 	}
 
 	public static function configure(string $path): Application
