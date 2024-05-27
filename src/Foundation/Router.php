@@ -94,6 +94,35 @@ final class Router
 		throw new \Exception("Route undefined");
 	}
 
+	private function invoke(array|callable $callback, Request $request)
+	{
+		if (is_array($callback))
+		{
+			list($class, $method) = $callback;
+
+			if (!class_exists($class))
+			{
+				throw new \Exception("$class not defined");
+			}
+
+			$controller = new $class;
+
+			if (!method_exists($controller, $method))
+			{
+				throw new \Exception("$method not defined");
+			}
+
+			return call_user_func([$controller, $method], $request);
+		}
+
+		if (is_callable($callback))
+		{
+			return call_user_func($callback, $request);
+		}
+
+		throw new \Exception("Invalid callback for route");
+	}
+
 	/**
 	 * Attempt to register a new route
 	 * 
