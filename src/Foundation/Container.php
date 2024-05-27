@@ -2,7 +2,7 @@
 
 namespace Tersworks\Foundation;
 
-class Container
+abstract class Container
 {
 	public static array $bindings = [];
 	public static array $instances = [];

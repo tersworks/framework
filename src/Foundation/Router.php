@@ -166,6 +166,10 @@ final class Router
 
 		foreach($methods as $method)
 		{
+			/**
+			 *  TODO:
+			 *  	- Avoid magic methods
+			 */
 			if(!$method->isConstructor() && !$method->isDestructor())
 			{
 				$methodNames[] = $method->getName();
