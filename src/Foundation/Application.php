@@ -21,6 +21,8 @@ class Application extends Container
 		static::registerFacades([
 			\Tersworks\Facades\Route::class
 		]);
+
+		static::registerExceptionsHandler();
 	}
 
 	public static function configure(string $path): Application
