@@ -1,6 +1,8 @@
 <?php
 
-namespace Tersworks;
+namespace Tersworks\Foundation;
+
+use Tersworks\Foundation\Http\Request;
 
 final class Router
 {	
@@ -14,17 +16,11 @@ final class Router
 	private function __construct() {}
 	private function __clone() {}
 
-	public static function __call(string $name, array $arguments): mixed
-	{
-		if (in_array($name, self::getAvailableMethods()))
-		{
-			return self::getInstance()->$name(...$arguments);
-		}
-
-		throw new \Exception("Unknown method $name");
-	}
-
-	public static function getInstance(): Router
+	/**
+	 * Get Router instance
+	 * 
+	 */
+	public static function getInstance(): self
 	{
 		return self::$instance ?? self::$instance = new self();
 	}
@@ -80,13 +76,18 @@ final class Router
 	 * @param  string $method 
 	 * @param  string $uri    
 	 */
-	public function dispatch(string $method, string $uri)
+	public function dispatch(Request $request)
 	{
 		foreach ($this->routes as $route)
 		{
-			if (in_array($method, $route['methods']) && $route['uri'] == $uri)
+			if ($route['uri'] == $request->getUri())
 			{
-				return call_user_func($route['callback']);
+				if (in_array($request->getMethod(), $route['methods']))
+				{
+					return call_user_func($route['callback']);
+				}
+
+				throw new \Exception("Unsupported method");
 			}
 		}
 
@@ -115,6 +116,13 @@ final class Router
 		$this->addRoute($methods, $uri, $callback);
 	}
 
+	/**
+	 * Register a new route
+	 * 
+	 * @param array    $methods 
+	 * @param string   $uri     
+	 * @param callable $callback
+	 */
 	private function addRoute(array $methods, string $uri, array|callable $callback): void
 	{
 		$this->routes[] = [
@@ -134,7 +142,7 @@ final class Router
 	{
 		foreach ($this->routes as $route)
 		{
-			if ($route['method'] === $method && $route['uri'] === $uri) 
+			if (in_array($method, $route['methods']) && $route['uri'] === $uri) 
 			{
 				return true;
 			}
@@ -145,6 +153,7 @@ final class Router
 
 	/**
 	 * Return available methods for the class
+	 * 
 	 * @return array
 	 */
 	private static function getAvailableMethods(): array
@@ -157,7 +166,7 @@ final class Router
 
 		foreach($methods as $method)
 		{
-			if(!$method->isConstructor() && !$method->isDestructor() && !$method->isMagic())
+			if(!$method->isConstructor() && !$method->isDestructor())
 			{
 				$methodNames[] = $method->getName();
 			}
