@@ -90,8 +90,7 @@ final class Router
 				throw new \Exception("Unsupported method");
 			}
 		}
-
-		echo "Route undefined";
+		
 		throw new \Exception("Route undefined");
 	}
 

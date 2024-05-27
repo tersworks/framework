@@ -8,7 +8,7 @@ class Handler
 
 	private function __construct() 
 	{
-		@set_error_handler([self::$instance, 'handle']);
+		set_exception_handler([$this, 'handle']);
 	}
 
     public static function __callStatic(string $name, array $arguments)
@@ -27,8 +27,8 @@ class Handler
 		return self::$instance ?? self::$instance = new self();
 	}
 
-	protected function handle(Throwable $exception)
+	public function handle(\Throwable $exception)
 	{
-		echo 'An error occurred. Please try again later!';
+		echo $exception->getMessage();
 	}
 }
