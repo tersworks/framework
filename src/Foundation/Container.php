@@ -2,10 +2,13 @@
 
 namespace Tersworks\Foundation;
 
+use Tersworks\Exceptions\Handler;
+
 abstract class Container
 {
 	public static array $bindings = [];
 	public static array $instances = [];
+	public static ?Handler $exceptionsHandler = null;
 
 	public static function bind(string $name, string $className): void
 	{
@@ -41,5 +44,10 @@ abstract class Container
 		{
 			static::bind($facade::getFacadeAccessor(), $facade::getFacadeClass());
 		}
+	}
+
+	public static function registerExceptionsHandler(): void
+	{
+		static::$exceptionsHandler = Handler::getInstance();
 	}
 }

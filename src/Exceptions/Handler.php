@@ -6,7 +6,10 @@ class Handler
 {
 	private static ?Handler $instance = null;
 
-	private function __construct() {}
+	private function __construct() 
+	{
+		@set_error_handler([$this, 'handle']);
+	}
 
     public static function __callStatic(string $name, array $arguments)
     {

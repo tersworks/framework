@@ -33,13 +33,6 @@ class Application extends Container
 		return self::$instance;
 	}
 
-	public function bootstrap(): Application
-	{
-		set_exception_handler([ExceptionHandler::class, 'handle']);
-
-		return self::$instance;
-	}
-
 	public function withRoutes(string $path): Application
 	{
 		if (!file_exists($path))
