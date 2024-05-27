@@ -3,6 +3,7 @@
 namespace Tersworks\Foundation;
 
 use Tersworks\Facades\Route;
+use Tersworks\Exceptions\Handler;
 use Tersworks\Foundation\Http\Request;
 
 class Application extends Container
@@ -24,7 +25,7 @@ class Application extends Container
 
 	public static function configure(string $path): Application
 	{
-		if(self::$instance === null)
+		if (self::$instance === null)
 		{
 			self::$instance = new self($path);
 		}
@@ -32,8 +33,20 @@ class Application extends Container
 		return self::$instance;
 	}
 
+	public function bootstrap(): Application
+	{
+		set_exception_handler([ExceptionHandler::class, 'handle']);
+
+		return self::$instance;
+	}
+
 	public function withRoutes(string $path): Application
 	{
+		if (!file_exists($path))
+		{
+			throw new Exception("The specified file doesn't exist.");
+		}
+
 		require $path;
 
 		return $this;
