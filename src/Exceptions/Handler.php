@@ -24,7 +24,7 @@ class Handler
 
 	public static function getInstance(): Handler
 	{
-		if (self::$instance === null)
+		if (self::$instance == null)
 		{
 			self::$instance == new self();
 		}
