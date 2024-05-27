@@ -8,7 +8,7 @@ class Handler
 
 	private function __construct() 
 	{
-		@set_error_handler([$this, 'handle']);
+		@set_error_handler([self::$instance, 'handle']);
 	}
 
     public static function __callStatic(string $name, array $arguments)
@@ -24,12 +24,7 @@ class Handler
 
 	public static function getInstance(): Handler
 	{
-		if (self::$instance == null)
-		{
-			self::$instance == new self();
-		}
-
-		return self::$instance;
+		return self::$instance ?? self::$instance = new self();
 	}
 
 	protected function handle(Throwable $exception)
