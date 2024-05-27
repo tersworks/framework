@@ -84,7 +84,7 @@ final class Router
 			{
 				if (in_array($request->getMethod(), $route['methods']))
 				{
-					return call_user_func($route['callback'], $request);
+					return $this->invoke($callback, $request);
 				}
 
 				throw new \Exception("Unsupported method");
