@@ -9,7 +9,7 @@ class Application extends Container
 {
 	private static ?Application $instance = null;
 
-	const VERSION = '0.1-alpha';
+	const VERSION = '0.1.3-alpha';
 
 	protected string $basePath;
 
@@ -18,7 +18,7 @@ class Application extends Container
 		$this->basePath = $path;
 
 		static::registerFacades([
-			Tersworks\Facades\Route::class
+			\Tersworks\Facades\Route::class
 		]);
 	}
 
@@ -30,6 +30,13 @@ class Application extends Container
 		}
 
 		return self::$instance;
+	}
+
+	public function withRoutes(string $path): Application
+	{
+		require $path;
+
+		return $this;
 	}
 
 	public static function version(): string
